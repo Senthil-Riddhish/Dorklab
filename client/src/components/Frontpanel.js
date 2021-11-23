@@ -99,14 +99,14 @@ function Frontpanel() {
     }
     return (
         <div>
-            <div className="container" style={{ border: "2px solid red", display: "flex" }}>
+            <div className="container" style={{display: "flex" }}>
                 <div className="row" id="rows">
                     {data.map((res) =>
                         <Card style={{ width: '25rem', margin: "10px" }} id={res._id}>
                             <Card.Body>
                                 <Button variant="primary" style={{ marginRight: "10px" }} onClick={() => dels(res._id)}><i className="fas fa-trash"></i></Button><Button variant="primary" onClick={() => update(res._id)} name={res._id}><i className="fas fa-pencil-alt"></i></Button>
                                 <Card.Title>{res.title}</Card.Title>
-                                <div style={{ border: "2px solid red", width: "100%", padding: "0px", height: "250px" }}>
+                                <div style={{width: "100%", padding: "0px", height: "250px" }}>
                                     <Card.Img variant="top" src={res.imageUrl} style={{ height: "100%" }} />
                                 </div>
                                 <Card.Text>{res.subtitle}</Card.Text>
