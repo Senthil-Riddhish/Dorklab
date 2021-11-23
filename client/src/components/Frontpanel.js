@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Modal,Form } from "react-bootstrap";
+import { Modal, Form } from "react-bootstrap";
 import axios from 'axios';
+import Swal from 'sweetalert2'
 import { Container, Card, Button, Row, Col, Navbar, Nav, Badge } from "react-bootstrap";
 function Frontpanel() {
     const [data, setdata] = useState([]);
@@ -9,6 +10,11 @@ function Frontpanel() {
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    const [title, setTitle] = useState("");
+    const [url, setUrl] = useState("");
+    const [subtitle, setsubTile] = useState("");
+    const [descrip, setdescrip] = useState("");
+    const [keywords, setkeywords] = useState("");
     useEffect(async () => {
         try {
             const response = await axios.get('http://localhost:8080/getDetails');
@@ -23,18 +29,58 @@ function Frontpanel() {
             console.log(typeof (id));
             const response = await axios.delete('http://localhost:8080/deleteDetails/' + id);
             if (response) {
-                //window.location.reload();
+                Swal.fire(
+                    'Good job!',
+                    'Successfully deleted!',
+                    'success'
+                  ).then(res=>window.location.reload());
             }
         } catch (error) {
             console.error(error);
         }
     }
-    async function update(id) {
-        console.log(id, data);
+    function single(id) {
+        handleShow();
         const specific = data.filter(res => {
             if (res._id == `${id}`) { return res }
         });
-        return (
+        console.log(specific);
+        setid(id);
+        setTitle(specific[0].title);
+        setUrl(specific[0].imageUrl);
+        setsubTile(specific[0].subtitle);
+        setdescrip(specific[0].description);
+        setkeywords(specific[0].keywords);
+    }
+    const updat = async () => {
+        try {
+            const response = await axios.put('http://localhost:8080/updateDetails/' + id, {
+                "title": title,
+                "imageUrl": url,
+                "subtitle": subtitle,
+                "description": descrip,
+                "keywords": keywords
+            });
+            if (response) {
+                setid("");
+                setTitle("");
+                setUrl("");
+                setsubTile("");
+                setdescrip("");
+                setkeywords("");
+                handleClose();
+                Swal.fire(
+                    'Good job!',
+                    'Successfully updated!',
+                    'success'
+                  ).then(res=>window.location.reload());
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    return (
+        <div>
             <Modal
                 show={show}
                 onHide={handleClose}
@@ -51,6 +97,8 @@ function Frontpanel() {
                                 id="floatingInputCustom"
                                 type="text"
                                 placeholder="name@example.com"
+                                value={title}
+                                onChange={(e) => { setTitle(e.target.value); }}
                             />
                             <label htmlFor="floatingInputCustom">Title</label>
                         </Form.Floating>
@@ -59,6 +107,8 @@ function Frontpanel() {
                                 id="floatingInputCustom"
                                 type="text"
                                 placeholder="name@example.com"
+                                value={url}
+                                onChange={(e) => { setUrl(e.target.value); }}
                             />
                             <label htmlFor="floatingInputCustom">ImageUrl</label>
                         </Form.Floating>
@@ -67,6 +117,8 @@ function Frontpanel() {
                                 id="floatingInputCustom"
                                 type="text"
                                 placeholder="name@example.com"
+                                value={subtitle}
+                                onChange={(e) => { setsubTile(e.target.value); }}
                             />
                             <label htmlFor="floatingInputCustom">Sub-Title</label>
                         </Form.Floating>
@@ -75,6 +127,8 @@ function Frontpanel() {
                                 id="floatingInputCustom"
                                 type="text"
                                 placeholder="name@example.com"
+                                value={descrip}
+                                onChange={(e) => { setdescrip(e.target.value); }}
                             />
                             <label htmlFor="floatingInputCustom">Description</label>
                         </Form.Floating>
@@ -83,6 +137,8 @@ function Frontpanel() {
                                 id="floatingInputCustom"
                                 type="text"
                                 placeholder="name@example.com"
+                                value={keywords}
+                                onChange={(e) => { setkeywords(e.target.value); }}
                             />
                             <label htmlFor="floatingInputCustom">Keywords-separate by blankspace</label>
                         </Form.Floating>
@@ -92,21 +148,17 @@ function Frontpanel() {
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" >Add Task</Button>
+                    <Button variant="primary" onClick={updat}>update Task</Button>
                 </Modal.Footer>
             </Modal>
-        );
-    }
-    return (
-        <div>
-            <div className="container" style={{display: "flex" }}>
+            <div className="container" style={{ display: "flex" }}>
                 <div className="row" id="rows">
                     {data.map((res) =>
                         <Card style={{ width: '25rem', margin: "10px" }} id={res._id}>
                             <Card.Body>
-                                <Button variant="primary" style={{ marginRight: "10px" }} onClick={() => dels(res._id)}><i className="fas fa-trash"></i></Button><Button variant="primary" onClick={() => update(res._id)} name={res._id}><i className="fas fa-pencil-alt"></i></Button>
+                                <Button variant="primary" style={{ marginRight: "10px" }} onClick={() => dels(res._id)}><i className="fas fa-trash"></i></Button><Button variant="primary" onClick={() => single(res._id)} id="buttons"><i className="fas fa-pencil-alt"></i></Button>
                                 <Card.Title>{res.title}</Card.Title>
-                                <div style={{width: "100%", padding: "0px", height: "250px" }}>
+                                <div style={{ width: "100%", padding: "0px", height: "250px" }}>
                                     <Card.Img variant="top" src={res.imageUrl} style={{ height: "100%" }} />
                                 </div>
                                 <Card.Text>{res.subtitle}</Card.Text>

@@ -45,11 +45,42 @@ const deleteuser=async(req,res)=>{
             id
         }=req.params;
         console.log(typeof(id));
-        const deleteuser=await userModel.deleteOne({id});
+        const deleteuser=await userModel.findByIdAndRemove(id);
         console.log(deleteuser);
         res.json({status:400,message:deleteuser});
     }catch(error){
         res.json({status:400,status:error.message});
     }
 }
-module.exports={user,getUser,deleteuser};
+const updateUser=async(req,res)=>{
+    try{
+        const{
+            id
+        }=req.params;
+        const{
+            title,
+            imageUrl,
+            subtitle,
+            description,
+            keywords
+        }=req.body;
+        console.log("the upadte id is : ",id,{
+            title,
+            imageUrl,
+            subtitle,
+            description,
+            keywords
+        });
+        const updat=await userModel.findByIdAndUpdate(id,{
+            title,
+            imageUrl,
+            subtitle,
+            description,
+            keywords
+        });
+        res.json({status:200,message:updat})
+    }catch(error){
+        res.json({status:400,message:error.message});
+    }
+}
+module.exports={user,getUser,deleteuser,updateUser};
