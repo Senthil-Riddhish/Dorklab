@@ -1,6 +1,5 @@
 const userModel=require('../Model/user');
 const user=async(req,res)=>{
-    console.log('inisde adduser');
     try{
         const{
             title,
@@ -43,9 +42,7 @@ const deleteuser=async(req,res)=>{
         const{
             id
         }=req.params;
-        console.log(typeof(id));
         const deleteuser=await userModel.findByIdAndRemove(id);
-        console.log(deleteuser);
         res.json({status:400,message:deleteuser});
     }catch(error){
         res.json({status:400,status:error.message});
@@ -63,13 +60,6 @@ const updateUser=async(req,res)=>{
             description,
             keywords
         }=req.body;
-        console.log("the upadte id is : ",id,{
-            title,
-            imageUrl,
-            subtitle,
-            description,
-            keywords
-        });
         const updat=await userModel.findByIdAndUpdate(id,{
             title,
             imageUrl,
