@@ -1,6 +1,7 @@
 const mongoose=require("mongoose");
 const password=encodeURI('riddhishwar');
 const url=process.env.url;
+console.log(process.env.url);
 mongoose.connect(url,{
     useNewUrlParser:true,
     useUnifiedTopology:true

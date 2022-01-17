@@ -7,6 +7,7 @@ const db=require('./db');
 app.use(express.json());
 app.use(cors());
 app.use('/',require('./router'));
+console.log(process.env.port);
 app.listen(process.env.port,()=>{
     console.log("server connecting...");
 });

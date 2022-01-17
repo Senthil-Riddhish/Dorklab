@@ -17,7 +17,6 @@ const user=async(req,res)=>{
             description,
             keywords
         }).then(respond=>{
-            console.log(respond);
             res.json({status:200,message:respond});
         });
 

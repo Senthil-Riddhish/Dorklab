@@ -154,7 +154,7 @@ function Frontpanel() {
             <div className="container" style={{ display: "flex" }}>
                 <div className="row" id="rows">
                     {data.map((res) =>
-                        <Card style={{ width: '25rem', margin: "10px" }} id={res._id}>
+                        <Card style={{ width: '25rem', margin: "10px",boxShadow:"rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset"}} id={res._id}>
                             <Card.Body>
                                 <Button variant="primary" style={{ marginRight: "10px" }} onClick={() => dels(res._id)}><i className="fas fa-trash"></i></Button><Button variant="primary" onClick={() => single(res._id)} id="buttons"><i className="fas fa-pencil-alt"></i></Button>
                                 <Card.Title>{res.title}</Card.Title>
